@@ -171,5 +171,39 @@ namespace CSharpTest
 
             Assert.AreEqual(new DateTime(2021, 4, 28), result);
         }
+
+        [TestMethod]
+        public void TestMultipleWeekendsGapsRepetetive()
+        {
+            DateTime startDate = new DateTime(2021, 4, 12);
+            int count = 10;
+            WeekEnd[] weekends = new WeekEnd[4]
+            {
+                new WeekEnd(new DateTime(2021, 4, 13), new DateTime(2021, 4, 15)),
+                new WeekEnd(new DateTime(2021, 4, 24), new DateTime(2021, 4, 24)),
+                new WeekEnd(new DateTime(2021, 4, 25), new DateTime(2021, 4, 25)),
+                new WeekEnd(new DateTime(2021, 4, 27), new DateTime(2021, 4, 27)),
+            };
+
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekends);
+
+            Assert.AreEqual(new DateTime(2021, 4, 26), result);
+        }
+
+        [TestMethod]
+        public void TestOverlaps()
+        {
+            DateTime startDate = new DateTime(2021, 4, 12);
+            int count = 3;
+            WeekEnd[] weekends = new WeekEnd[2]
+            {
+                new WeekEnd(new DateTime(2021, 4, 13), new DateTime(2021, 4, 15)),
+                new WeekEnd(new DateTime(2021, 4, 14), new DateTime(2021, 4, 16)),
+            };
+
+            DateTime result = new WorkDayCalculator().Calculate(startDate, count, weekends);
+
+            Assert.AreEqual(new DateTime(2021, 4, 18), result);
+        }
     }
 }
